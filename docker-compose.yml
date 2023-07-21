@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  web:
+    container_name: web
+    build: .
+    ports: 
+      - 3000:3000 
+    restart: on-failure
+    volumes:
+      - ./:/usr/src/app/
+    depends_on:
+      - web-db
+
+
+  web-db:
+    image: postgres:15
+    container_name: web-db
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres 
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres-db:
